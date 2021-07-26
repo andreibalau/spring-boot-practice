@@ -21,7 +21,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
                 .anyRequest().authenticated().and().httpBasic().and().csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and().cors();
         http.addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class);
     }
 
@@ -30,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOriginPatterns("*")
+                registry.addMapping("/**").allowedOriginPatterns("http://localhost:81")
                         .allowedMethods("GET", "PUT", "POST", "PATCH", "DELETE", "OPTIONS").allowCredentials(true);
             }
         };
